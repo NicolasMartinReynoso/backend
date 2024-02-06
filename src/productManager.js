@@ -2,7 +2,7 @@ import fs from "fs"
 
 
 const PATH = './products.json'
-class ProductManager {
+export default class ProductManager {
     constructor() {
         this.path = PATH
     }
@@ -39,10 +39,10 @@ class ProductManager {
         if (fs.existsSync(this.path)) {
             let data = await fs.promises.readFile(this.path, 'utf-8')
             let products = JSON.parse(data)
-            console.log(products)
+            return products
         } else {
             await fs.promises.writeFile(this.path, JSON.stringify(products))
-            console.log(products)
+            return products
         }
     }
 
@@ -52,9 +52,9 @@ class ProductManager {
         let products = JSON.parse(data)
         let productFilter = products.find((product) => product.id === id)
         if (productFilter) {
-            console.log(productFilter)
+            return productFilter
         } else {
-            console.log(`Error:no se encuentra el producto con el id (${id})`)
+            return `Error:no se encuentra el producto con el id (${id})`
         }
     }
 
@@ -87,18 +87,7 @@ class ProductManager {
         } else {
             console.log(`Error:no se encuentra el producto con el id (${id})`)
         }
+    }
 }
-}
 
 
-// Proceso de testing //
-
-const prueba = new ProductManager()
-await prueba.getProducts()
-await prueba.addProduct("producto de prueba", "Este es un producto prueba", 200, [], 20, "abc123")
-await prueba.getProducts()
-await prueba.getProductById(2)
-await prueba.addProduct("producto de prueba", "Este es un producto prueba", 200, [], 20,"abc456")
-await prueba.getProductById(2)
-await prueba.updateProduct(1,{nombre:"producto actualizado"})
-await prueba.deleteProductById(2)
