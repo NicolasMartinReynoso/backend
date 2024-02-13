@@ -7,7 +7,7 @@ export default class ProductManager {
         this.path = PATH
     }
 
-    async addProduct(title, description, price, thumbnail, stock, code) {
+    async addProduct(title, description, price, category, stock, code) {
         let newcode = code
         let products = JSON.parse(await fs.promises.readFile(this.path, "utf-8"))
         if (products.find((product) => product.code === newcode)) {
@@ -17,10 +17,12 @@ export default class ProductManager {
                 nombre: this.title = title,
                 descripcion: this.description = description,
                 precio: this.price = price,
-                imagen: this.thumbnail = thumbnail,
+                imagen: this.thumbnail = [],
                 stock: this.stock = stock,
                 id: this.#idCreator(products) + 1,
-                code: this.code = code
+                code: this.code = code,
+                categoria: this.category = category,
+                status: true,
             }
             products.push(product)
             await fs.promises.writeFile(this.path, JSON.stringify(products))
